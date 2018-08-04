@@ -1,22 +1,17 @@
 require 'rails_helper'
 
 describe Food do
+  it "has a valid factory" do
+    expect(FactoryGirl.build(:food)).to be_valid
+  end
+
   it "is valid with a name and description" do
-    food = Food.new(
-      name: "Nasi Uduk",
-      description: "Betawi style steamed rice cooked in coconut milk. Delicious!",
-      price: 10000.0
-    )
-    expect(food).to be_valid
+    expect(FactoryGirl.build(:food)).to be_valid
   end
 
   describe "invalid without name or description" do
     before :each do
-      @food = Food.new(
-        name: nil,
-        description: nil,
-        price: 10000.0
-      )
+      @food = FactoryGirl.build(:food, name: nil, description: nil)
     end
     
     it "is invalid without name" do
@@ -31,17 +26,8 @@ describe Food do
   end
 
   it "is invalid with a duplicate name" do
-    food1 = Food.create(
-      name: "Nasi Uduk",
-      description: "Betawi style steamed rice cooked in coconut milk. Delicious!",
-      price: 10000.0
-    )
-    
-    food2 = Food.new(
-      name: "Nasi Uduk",
-      description: "Just with a different description.",
-      price: 10000.0
-    )
+    food1 = FactoryGirl.create(:food, name: "Nasi Uduk")
+    food2 = FactoryGirl.build(:food, name: "Nasi Uduk")
 
     food2.valid?
     expect(food2.errors[:name]).to include("has already been taken")
