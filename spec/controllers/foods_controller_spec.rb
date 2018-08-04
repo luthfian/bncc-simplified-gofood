@@ -51,19 +51,44 @@ describe FoodsController do
   end
 
   describe 'GET #edit' do
-    it "assigns the requested food to @food"
-    it "renders the :edit template"
+    it "assigns the requested food to @food" do
+      food = create(:food)
+      get :edit, params: { id: food }
+      expect(assigns(:food)).to eq food
+    end
+
+    it "renders the :edit template" do
+      food = create(:food)
+      get :edit, params: { id: food }
+      expect(response).to render_template :edit
+    end
   end
 
   describe 'POST #create' do
     context "with valid attributes" do
-      it "saves the new food in the database"
-      it "redirects to foods#show"
+      it "saves the new food in the database" do
+        expect{
+          post :create, params: { food: attributes_for(:food) }
+        }.to change(Food, :count).by(1)
+      end
+
+      it "redirects to foods#show" do
+        post :create, params: { food: attributes_for(:food) }
+        expect(response).to redirect_to(food_path(assigns[:food]))
+      end
     end
 
     context "with invalid attributes" do
-      it "does not save the new food in the database"
-      it "re-renders the :new template"
+      it "does not save the new food in the database" do
+        expect{
+          post :create, params: { food: attributes_for(:invalid_food) }
+        }.not_to change(Food, :count)
+      end
+
+      it "re-renders the :new template" do
+        post :create, params: { food: attributes_for(:invalid_food) }
+        expect(response).to render_template :new
+      end
     end
   end
 
