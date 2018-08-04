@@ -59,7 +59,7 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
-  gem 'faker', "~> 1.4.3"
+  gem 'faker', git: 'git@github.com:stympy/faker.git'
   gem 'database_cleaner', "~> 1.3.0"
   gem 'launchy', "~> 2.4.2"
 end
